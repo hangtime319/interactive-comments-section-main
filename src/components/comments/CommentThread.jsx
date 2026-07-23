@@ -86,7 +86,14 @@ const CommentThread = ({ comment, parentId, handleAddReply, handleEditComment, h
         </div>
       </article>
 
-      {isReplying && <CommentForm handleSubmit={submitReply} />}
+      {/* SLIDE DOWN WITH GRID */}
+      <div className={`grid transition-all duration-300 ease-in-out ${isReplying ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+        <div className="overflow-hidden">
+          <div className="pt-2">
+            <CommentForm handleSubmit={submitReply} />
+          </div>
+        </div>
+      </div>
 
       {isModalOpen && (
         <DeleteModal
