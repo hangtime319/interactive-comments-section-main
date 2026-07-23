@@ -1,19 +1,18 @@
 import React from "react";
 
-const ScoreBox = ({ initialScore = 0 }) => {
-  const [score, setScore] = React.useState(initialScore);
+const ScoreBox = ({ score, commentId, onUpdateScore }) => {
 
-  const handleUpvote = () => {
-    setScore((prev) => prev + 1);
-  };
+  // const handleUpvote = () => {
+  //   setScore((prev) => prev + 1);
+  // };
 
-  const handleDownvote = () => {
-    setScore((prev) => (prev > 0 ? prev - 1 : 0));
-  };
+  // const handleDownvote = () => {
+  //   setScore((prev) => (prev > 0 ? prev - 1 : 0));
+  // };
 
   return (
     <div className="flex flex-row md:flex-col items-center justify-between bg-gray-100 rounded-lg px-4 py-2 w-24 md:w-11 md:px-0 md:py-3 h-10 md:h-auto">
-      <button className="flex items-center justify-center p-1 text-[#C5C6EF] hover:text-[#5357B6] transition-colors cursor-pointer" aria-label="Upvote" onClick={handleUpvote}>
+      <button className="flex items-center justify-center p-1 text-[#C5C6EF] hover:text-[#5357B6] transition-colors cursor-pointer" aria-label="Upvote" onClick={() => onUpdateScore(commentId, "up")}>
         <svg width="11" height="11" xmlns="http://www.w3.org/2000/svg">
           <path
             fill="currentColor"
@@ -24,7 +23,7 @@ const ScoreBox = ({ initialScore = 0 }) => {
 
       <span className="text-[#5357B6] font-bold">{score}</span>
 
-      <button className="flex items-center justify-center p-1 text-[#C5C6EF] hover:text-[#5357B6] transition-colors cursor-pointer" aria-label="Downvote" onClick={handleDownvote}>
+      <button className="flex items-center justify-center p-1 text-[#C5C6EF] hover:text-[#5357B6] transition-colors cursor-pointer" aria-label="Downvote" onClick={() => onUpdateScore(commentId, "down")}>
         <svg width="11" height="3" xmlns="http://www.w3.org/2000/svg">
           <path fill="currentColor" d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 .53.167h8.495Z" />
         </svg>

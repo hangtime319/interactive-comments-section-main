@@ -6,8 +6,18 @@ import { UserContext } from "../../context/UserContext";
 import DeleteModal from "../modals/DeleteModal";
 
 const CommentSection = () => {
-  const [comments, setComments] = React.useState(data.comments);
   const { currentUser } = useContext(UserContext);
+  const [comments, setComments] = React.useState(() => {
+    const savedComments = localStorage.getItem("interactive-comments");
+    if (savedComments) {
+      return JSON.parse(savedComments);
+    }
+    return data.comments;
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem("interactive-comments", JSON.stringify(comments));
+  }, [comments]);
 
   const addComment = (text) => {
     const newComment = {
@@ -83,17 +93,39 @@ const CommentSection = () => {
     setComments(updateComments);
   };
 
+  const updateScore = (commentId, type) => {
+    const updatedComments = comments.map((comment) => {
+      if (comment.id === commentId) {
+        const newScore = type === "up" ? comment.score + 1 : comment.score - 1;
+        return { ...comment, score: newScore >= 0 ? newScore : 0 };
+      }
+
+      if (comment.replies && comment.replies.length > 0) {
+        const updatedReplies = comment.replies.map((reply) => {
+          if (reply.id === commentId) {
+            const newScore = type === "up" ? reply.score + 1 : reply.score - 1;
+            return { ...reply, score: newScore >= 0 ? newScore : 0 };
+          }
+          return reply;
+        });
+        return { ...comment, replies: updatedReplies };
+      }
+      return comment;
+    });
+    setComments(updatedComments);
+  };
+
   return (
     <main className="flex flex-col gap-4 justify-center items-center min-h-screen py-10 px-4">
       <section className="flex flex-col gap-4 w-full max-w-3xl">
         {comments.map((comment) => (
           <div key={comment.id} className="flex flex-col gap-4">
-            <CommentThread comment={comment} parentId={comment.id} handleAddReply={addReply} handleEditComment={editComment} handleDeleteComment={deleteComment} />
+            <CommentThread comment={comment} parentId={comment.id} handleAddReply={addReply} handleEditComment={editComment} handleDeleteComment={deleteComment} handleUpdateScore={updateScore} />
 
             {comment.replies && comment.replies.length > 0 && (
               <div className="flex flex-col gap-4 border-l-2 border-gray-200 pl-4 ml-4 md:pl-10 md:ml-10">
                 {comment.replies.map((reply) => (
-                  <CommentThread key={reply.id} comment={reply} parentId={comment.id} handleAddReply={addReply} handleEditComment={editComment} handleDeleteComment={deleteComment} />
+                  <CommentThread key={reply.id} comment={reply} parentId={comment.id} handleAddReply={addReply} handleEditComment={editComment} handleDeleteComment={deleteComment} handleUpdateScore={updateScore} />
                 ))}
               </div>
             )}

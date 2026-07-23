@@ -6,7 +6,7 @@ import ScoreBox from "../ui/ScoreBox";
 import { UserContext } from "../../context/UserContext";
 import DeleteModal from "../modals/DeleteModal";
 
-const CommentThread = ({ comment, parentId, handleAddReply, handleEditComment, handleDeleteComment }) => {
+const CommentThread = ({ comment, parentId, handleAddReply, handleEditComment, handleDeleteComment, handleUpdateScore }) => {
   const { currentUser } = React.useContext(UserContext);
   const isCurrentUser = currentUser?.username === comment.user.username;
   const [isReplying, setIsReplying] = React.useState(false);
@@ -33,7 +33,7 @@ const CommentThread = ({ comment, parentId, handleAddReply, handleEditComment, h
           <span className="text-gray-500">{comment.createdAt}</span>
         </div>
 
-        {/* 2. TEXTO OU EDIÇÃO */}
+        {/* 2. TEXT OR EDITION */}
         <div className="col-span-2 md:col-start-2 md:col-span-2 md:row-start-2 w-full">
           {isEditing ? (
             <div className="flex flex-col items-end gap-3 w-full mt-2">
@@ -57,10 +57,10 @@ const CommentThread = ({ comment, parentId, handleAddReply, handleEditComment, h
 
         {/* 3. SCOREBOX */}
         <div className="col-start-1 row-start-3 md:col-start-1 md:row-start-1 md:row-span-2 flex items-start">
-          <ScoreBox initialScore={comment.score} />
+          <ScoreBox score={comment.score} commentId={comment.id} onUpdateScore={handleUpdateScore} />
         </div>
 
-        {/* 4. AÇÕES (BOTÕES) */}
+        {/* 4. BUTTONS */}
         <div className="col-start-2 row-start-3 md:col-start-3 md:row-start-1 flex justify-end items-center gap-4">
           {isCurrentUser ? (
             <>

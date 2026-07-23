@@ -15,7 +15,7 @@ const CommentForm = ({ handleSubmit }) => {
 
   return (
     
-      <form onSubmit={onSubmit} className="grid grid-cols-2 md:grid-cols-[auto_1fr_auto] gap-4 bg-white rounded-lg p-4 md:p-6 w-full">
+      <form onSubmit={onSubmit} className="grid grid-cols-2 md:grid-cols-[auto_1fr_auto] gap-4 bg-white rounded-lg p-4 md:p-6 w-full items-start">
         <div className="col-start-1 row-start-2 md:col-start-1 md:row-start-1 flex items-center">
           {currentUser && <Avatar image={currentUser.image.png} username={currentUser.username} />}
         </div>
